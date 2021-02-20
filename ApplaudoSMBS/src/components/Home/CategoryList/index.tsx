@@ -4,6 +4,7 @@ import { View, StyleSheet, FlatList, Text } from 'react-native';
 import Serie from './Serie';
 import { CategoryListProps } from '../../../utils/Types';
 import useAxios from 'axios-hooks';
+import Colors from '../../../utils/Theme/Colors';
 
 const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
     const { list, type } = props;
@@ -14,11 +15,12 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
 
     return (
         <View style={styles.list}>
-            <Text>{list?.attributes?.title}</Text>
-        <FlatList
+            <Text style={styles.title}>{list?.attributes?.title}</Text>
+            <FlatList
                 data={data?.data}
                 renderItem={({ item, index }) => <Serie serie={item}/>}
-                showsHorizontalScrollIndicator={true}
+                 showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item?.id}
                 horizontal={true}
             /> 
@@ -29,7 +31,13 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
 const styles = StyleSheet.create({
     list: {
         flex: 1,
-        backgroundColor: 'red',
+        marginBottom: 20,
+    },
+    title: {
+        fontSize: 16,
+        color: Colors.black,
+        fontWeight: 'bold',
+        marginBottom: 10,
     }
 });
 

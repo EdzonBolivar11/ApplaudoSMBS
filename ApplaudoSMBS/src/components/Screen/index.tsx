@@ -55,6 +55,7 @@ const index: FunctionComponent<ScreenProps> = (props) => {
           false ? (
             <ScrollView
               bounces={refreshEnabled && scrollBounces}
+              showsVerticalScrollIndicator={false}
               contentContainerStyle={{flexGrow: 1}}
               refreshControl={
                 <RefreshControl
@@ -66,7 +67,7 @@ const index: FunctionComponent<ScreenProps> = (props) => {
               {children}
             </ScrollView>
           ) : (
-            <ScrollView bounces={false} contentContainerStyle={{flexGrow: 1}}>
+            <ScrollView bounces={false} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
               {children}
             </ScrollView>
           )
