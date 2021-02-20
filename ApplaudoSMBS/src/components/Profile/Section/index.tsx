@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { Fragment, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Text, StyleSheet } from 'react-native';
 import Item from './item';
@@ -6,13 +6,13 @@ import Colors from '../../../utils/Theme/Colors';
 
 import {SectionProps} from './../../../utils/Types';
 
-const index: FunctionComponent<SectionProps> = (props) => {
+const Section: FunctionComponent<SectionProps> = (props) => {
     const { section } = props;
     return (
-        <>
+        <Fragment>
             <Text style={styles.title}>{section.title}</Text>
             {section.fields.map(field => <Item key={field.id} field={field}/> )}
-        </>
+        </Fragment>
     )
 }
 
@@ -30,11 +30,11 @@ const styles = StyleSheet.create({
   }
 });
 
-index.defaultProps = {
+Section.defaultProps = {
     
 };
 
-index.propTypes = {
+Section.propTypes = {
     section: PropTypes.shape({
         title: PropTypes.string,
         fields: PropTypes.arrayOf(
@@ -46,4 +46,4 @@ index.propTypes = {
     }),
 };
 
-export default index;
+export default Section;

@@ -5,6 +5,7 @@ import { RootStack } from './src/utils/Types';
 
 //Pages
 import Profile from './src/Pages/Profile';
+import Home from './src/Pages/Home';
 
 const Stack = createStackNavigator<RootStack>();
 
@@ -23,6 +24,7 @@ const Navigation = () => {
     <NavigationContainer ref={ref}>
       <Stack.Navigator initialRouteName="Profile" {...defaultStackSettings}>
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
   );

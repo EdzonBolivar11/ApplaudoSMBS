@@ -35,6 +35,7 @@ export interface FieldProps {
 }
 
 //Components
+//Screen
 export interface ScreenProps {
     refreshEnabled?: boolean;
     scrollBounces?: boolean;
@@ -42,4 +43,14 @@ export interface ScreenProps {
     onRefresh?: () => {};
     scroll?: boolean;
     gradientColors?: string[];
+}
+
+//Categories
+export interface CategoryListProps {
+    list: any;
+    type: string;
+}
+
+export interface SerieProps {
+    serie: any;
 }
