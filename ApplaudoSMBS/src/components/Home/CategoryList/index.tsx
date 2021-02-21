@@ -12,6 +12,7 @@ import {CategoryListProps} from '../../../utils/Types';
 import Colors from '../../../utils/Theme/Colors';
 import Skeleton from './Skeleton';
 import axios from 'axios';
+import LoadingMore from '../../LoadingMore';
 
 const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
   const {list, type} = props;
@@ -86,7 +87,9 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
           horizontal={true}
           onEndReached={() => loadMore()}
           onEndReachedThreshold={0.1}
-          ListFooterComponent={() => renderFooter()}
+          ListFooterComponent={() => (
+            <LoadingMore loading={loading} horizontalFlatList={true} />
+          )}
         />
       )}
     </View>
@@ -103,13 +106,6 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontWeight: 'bold',
     marginBottom: 10,
-  },
-  activityIndicator: {
-    marginRight: 10,
-  },
-  wrapperIndicator: {
-    flex: 1,
-    justifyContent: 'center',
   },
 });
 
