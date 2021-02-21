@@ -1,17 +1,15 @@
-import React, {FunctionComponent} from 'react';
+import React from 'react';
 import {View, StyleSheet, Image, Linking} from 'react-native';
 import {Button, Text, Icon} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import Screen from '../../components/Screen';
 import Section from './../../components/Profile/Section';
 import Colors from '../../utils/Theme/Colors';
-import {ProfileProps} from '../../utils/Types';
 
 //Info
 import PersonalInformation from './info';
 
-const index: FunctionComponent<ProfileProps> = (props) => {
-  const {navigation} = props;
+const Profile = () => {
   const colors = [
     Colors.gradient1,
     Colors.gradient2,
@@ -19,8 +17,6 @@ const index: FunctionComponent<ProfileProps> = (props) => {
     Colors.gradient4,
     Colors.gradient5,
   ];
-
-  const onPressNext = () => navigation.navigate('Home');
 
   return (
     <Screen>
@@ -115,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default index;
+export default Profile;

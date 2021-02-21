@@ -1,18 +1,12 @@
 // Vendors
 import React, {FunctionComponent} from 'react';
-import {
-  ScrollView,
-  RefreshControl,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {ScreenProps} from './../../utils/Types';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Colors from './../../utils/Theme/Colors';
 import LinearGradient from 'react-native-linear-gradient';
 
 const fadeIn = {
@@ -20,17 +14,8 @@ const fadeIn = {
   to: {opacity: 1},
 };
 
-const index: FunctionComponent<ScreenProps> = (props) => {
-  const {
-    refreshEnabled,
-    scrollBounces,
-    refreshing,
-    onRefresh,
-    scroll,
-    children,
-    gradientColors,
-    useScrollview,
-  } = props;
+const Screen: FunctionComponent<ScreenProps> = (props) => {
+  const {children, gradientColors = [], useScrollview} = props;
 
   const renderStatusBar = () => {
     if (gradientColors.length > 0) {
@@ -57,7 +42,7 @@ const index: FunctionComponent<ScreenProps> = (props) => {
   return (
     <>
       {renderStatusBar()}
-      <SafeAreaView style={{flex: 0}} />
+      <SafeAreaView style={styles.safeArea} />
       <Animatable.View
         style={styles.screen}
         animation={fadeIn}
@@ -70,7 +55,7 @@ const index: FunctionComponent<ScreenProps> = (props) => {
           ) : (
             <ScrollView
               bounces={false}
-              contentContainerStyle={{flexGrow: 1}}
+              contentContainerStyle={styles.grow}
               showsVerticalScrollIndicator={false}>
               {children}
             </ScrollView>
@@ -88,30 +73,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
   },
+  safeArea: {
+    flex: 0,
+    backgroundColor: Colors.white,
+  },
+  grow: {
+    flexGrow: 1,
+  },
 });
 
-index.propTypes = {
-  refreshEnabled: PropTypes.bool,
-  scrollBounces: PropTypes.bool,
-  refreshing: PropTypes.bool,
-  onRefresh: PropTypes.func,
-  scroll: PropTypes.bool,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
-  gradientColors: PropTypes.array,
-  useScrollview: PropTypes.bool,
-};
-
-index.defaultProps = {
-  refreshEnabled: false,
+Screen.defaultProps = {
   scrollBounces: false,
-  refreshing: false,
-  onRefresh: () => {},
   scroll: true,
   gradientColors: [],
   useScrollview: true,
 };
 
-export default index;
+Screen.propTypes = {
+  scrollBounces: PropTypes.bool,
+  scroll: PropTypes.bool,
+  gradientColors: PropTypes.array,
+  useScrollview: PropTypes.bool,
+};
+
+export default Screen;

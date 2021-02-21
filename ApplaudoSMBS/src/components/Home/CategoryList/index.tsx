@@ -19,6 +19,7 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
   const [nextLink, setNextLink] = useState('');
   const [series, setSeries] = useState<any>([]);
   const [loading, setLoading] = useState(false);
+  const [hasSeries, setHasSeries] = useState(true);
 
   const loadMore = async () => {
     if (nextLink === '' || nextLink === undefined) {
@@ -35,18 +36,23 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
     setLoading(false);
   };
 
+  const loadSeries = async () =>
+    await axios
+      .get(list?.relationships[type]?.links?.related)
+      .then(({data}) => {
+        setHasSeries(data?.data.length > 0);
+        setSeries([...data?.data]);
+        setNextLink(data?.links?.next);
+      })
+      .catch(console.log);
+
   useEffect(() => {
-    const loadOnce = async () => {
-      await axios
-        .get(list?.relationships[type]?.links?.related)
-        .then(({data}) => {
-          setSeries([...series, ...data?.data]);
-          setNextLink(data?.links?.next);
-        })
-        .catch(console.log);
-    };
-    loadOnce();
+    loadSeries();
   }, []);
+
+  useEffect(() => {
+    loadSeries();
+  }, [type]);
 
   const renderFooter: any = () =>
     loading && (
@@ -59,7 +65,7 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
       </View>
     );
 
-  return (
+  return hasSeries ? (
     <View style={styles.list}>
       <Text style={styles.title}>{list?.attributes?.title}</Text>
       {series.length === 0 ? (
@@ -78,7 +84,7 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
         />
       )}
     </View>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({
