@@ -1,12 +1,18 @@
 // Vendors
 import React, {FunctionComponent} from 'react';
-import {ScrollView, RefreshControl, StatusBar, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  RefreshControl,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {ScreenProps} from './../../utils/Types';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import LinearGradient from 'react-native-linear-gradient';
 
 const fadeIn = {
@@ -23,29 +29,35 @@ const index: FunctionComponent<ScreenProps> = (props) => {
     scroll,
     children,
     gradientColors,
-    useScrollview
+    useScrollview,
   } = props;
 
   const renderStatusBar = () => {
-    if(gradientColors.length > 0) {
+    if (gradientColors.length > 0) {
       return (
         <LinearGradient
           start={{x: 0.0, y: 1}}
           end={{x: 1, y: 1.0}}
           locations={[0, 0.2, 0.4, 0.55, 0.8]}
           colors={gradientColors}>
-           <StatusBar translucent  barStyle="light-content" backgroundColor='transparent'/>
+          <StatusBar
+            translucent
+            barStyle="light-content"
+            backgroundColor="transparent"
+          />
         </LinearGradient>
-      )
+      );
     } else {
-      return <StatusBar translucent  barStyle="dark-content" backgroundColor='red' />
+      return (
+        <StatusBar translucent barStyle="dark-content" backgroundColor="red" />
+      );
     }
-  }
+  };
 
   return (
     <>
-    {renderStatusBar()}
-    <SafeAreaView style={{flex: 1 }}>
+      {renderStatusBar()}
+      <SafeAreaView style={{flex: 0}} />
       <Animatable.View
         style={styles.screen}
         animation={fadeIn}
@@ -56,7 +68,10 @@ const index: FunctionComponent<ScreenProps> = (props) => {
           !useScrollview ? (
             children
           ) : (
-            <ScrollView bounces={false} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              bounces={false}
+              contentContainerStyle={{flexGrow: 1}}
+              showsVerticalScrollIndicator={false}>
               {children}
             </ScrollView>
           )
@@ -64,7 +79,6 @@ const index: FunctionComponent<ScreenProps> = (props) => {
           children
         )}
       </Animatable.View>
-    </SafeAreaView>
     </>
   );
 };
@@ -73,7 +87,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.white,
-  }
+  },
 });
 
 index.propTypes = {
