@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -16,6 +16,7 @@ import axios from 'axios';
 const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
   const {list, type} = props;
 
+  const seriesRef = useRef<any>();
   const [nextLink, setNextLink] = useState('');
   const [series, setSeries] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -46,11 +47,15 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
       })
       .catch(console.log);
 
+  const toTop = () =>
+    seriesRef?.current?.scrollToOffset({animated: true, offset: 0});
+
   useEffect(() => {
     loadSeries();
   }, []);
 
   useEffect(() => {
+    toTop();
     loadSeries();
   }, [type]);
 
@@ -72,6 +77,7 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
         <Skeleton type="series" />
       ) : (
         <FlatList
+          ref={seriesRef}
           data={series}
           renderItem={({item}) => <Serie serie={item} />}
           showsVerticalScrollIndicator={false}

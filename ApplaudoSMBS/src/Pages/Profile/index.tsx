@@ -10,19 +10,9 @@ import Colors from '../../utils/Theme/Colors';
 import PersonalInformation from './info';
 
 const Profile = () => {
-  const colors = [
-    Colors.gradient1,
-    Colors.gradient2,
-    Colors.gradient3,
-    Colors.gradient4,
-    Colors.gradient5,
-  ];
-
   return (
-    <Screen>
+    <Screen safeArewViewColor={true}>
       <LinearGradient
-        start={{x: 0.0, y: 1}}
-        end={{x: 1, y: 1.0}}
         locations={[0, 0.2, 0.4, 0.55, 0.8]}
         colors={[
           Colors.gradient1,

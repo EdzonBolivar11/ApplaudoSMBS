@@ -33,12 +33,9 @@ export interface FieldProps {
 //Components
 //Screen
 export interface ScreenProps {
-    refreshEnabled?: boolean;
     scrollBounces?: boolean;
-    refreshing?: boolean;
-    onRefresh?: () => {};
     scroll?: boolean;
-    gradientColors?: string[];
+    safeArewViewColor?: boolean;
     useScrollview?: boolean;
 }
 
