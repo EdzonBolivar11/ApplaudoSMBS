@@ -7,7 +7,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {ScreenProps} from './../../utils/Types';
 import Colors from './../../utils/Theme/Colors';
-import LinearGradient from 'react-native-linear-gradient';
 
 const fadeIn = {
   from: {opacity: 0},
@@ -15,34 +14,21 @@ const fadeIn = {
 };
 
 const Screen: FunctionComponent<ScreenProps> = (props) => {
-  const {children, gradientColors = [], useScrollview} = props;
-
-  const renderStatusBar = () => {
-    if (gradientColors.length > 0) {
-      return (
-        <LinearGradient
-          start={{x: 0.0, y: 1}}
-          end={{x: 1, y: 1.0}}
-          locations={[0, 0.2, 0.4, 0.55, 0.8]}
-          colors={gradientColors}>
-          <StatusBar
-            translucent
-            barStyle="light-content"
-            backgroundColor="transparent"
-          />
-        </LinearGradient>
-      );
-    } else {
-      return (
-        <StatusBar translucent barStyle="dark-content" backgroundColor="red" />
-      );
-    }
-  };
+  const {children, safeArewViewColor = false, useScrollview} = props;
 
   return (
     <>
-      {renderStatusBar()}
-      <SafeAreaView style={styles.safeArea} />
+      <StatusBar translucent barStyle="dark-content" />
+      <SafeAreaView
+        style={[
+          styles.safeArea,
+          {
+            backgroundColor: safeArewViewColor
+              ? Colors.gradient1
+              : Colors.white,
+          },
+        ]}
+      />
       <Animatable.View
         style={styles.screen}
         animation={fadeIn}
@@ -75,7 +61,6 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 0,
-    backgroundColor: Colors.white,
   },
   grow: {
     flexGrow: 1,
@@ -85,14 +70,14 @@ const styles = StyleSheet.create({
 Screen.defaultProps = {
   scrollBounces: false,
   scroll: true,
-  gradientColors: [],
+  safeArewViewColor: false,
   useScrollview: true,
 };
 
 Screen.propTypes = {
   scrollBounces: PropTypes.bool,
   scroll: PropTypes.bool,
-  gradientColors: PropTypes.array,
+  safeArewViewColor: PropTypes.bool,
   useScrollview: PropTypes.bool,
 };
 
