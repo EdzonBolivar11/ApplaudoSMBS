@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import Navigation from './Navigation';
 
 const App = () => {

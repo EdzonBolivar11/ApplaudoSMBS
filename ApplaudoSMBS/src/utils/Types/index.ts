@@ -1,4 +1,4 @@
-import { SkeletonPlaceholder } from 'react-native-skeleton-placeholder';
+/* eslint-disable prettier/prettier */
 import { ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -9,11 +9,6 @@ export type RootStack = {
 };
 
 type ProfileScreenNavigationProp = StackNavigationProp<RootStack, 'Profile'>;
-
-//Profile
-export interface ProfileProps {
-    navigation: ProfileScreenNavigationProp;
-}
 
 export interface Field {
     id: string;
@@ -60,4 +55,10 @@ export interface SerieProps {
 //Skeleton
 export interface SkeletonProps {
     type: string;
+}
+
+//Tabs
+export interface TabsProps {
+    types: string[];
+    setActiveType: (index: string) => {};
 }

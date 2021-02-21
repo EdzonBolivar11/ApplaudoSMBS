@@ -1,10 +1,7 @@
 import React, {useRef} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-/* import {createStackNavigator} from '@react-navigation/stack'; */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-/* import {RootStack} from './src/utils/Types'; */
 
 //Pages
 import Profile from './src/Pages/Profile';
@@ -13,15 +10,6 @@ import Search from './src/Pages/Search';
 import Favorites from './src/Pages/Favorites';
 
 const Tab = createBottomTabNavigator();
-/* const Stack = createStackNavigator<RootStack>();
-
-const defaultStackSettings = {
-  headerMode: 'none',
-  cardShadowEnabled: false,
-  defaultNavigationOptions: {
-    gestureEnabled: true,
-  },
-}; */
 
 const Navigation = () => {
   const ref = useRef(null);
@@ -50,7 +38,6 @@ const Navigation = () => {
         iconName = '';
         break;
     }
-    /* return <Ionicons name={iconName} size={size} color={color} />; */
     return <Ionicons name={iconName} size={size} color={color} />;
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Photo from './../../assets/img/profile/photo.png';
 import Birthday from './../../assets/img/profile/birthday.png';
 import Pin from './../../assets/img/profile/pin.png';
@@ -25,7 +26,7 @@ export default {
                 { id: 'i1', icon: Birthday, value: '07/03/1997' },
                 { id: 'i2', icon: Pin, value: 'Torreón, Coahuila, México' },
                 { id: 'i3', icon: Phone, value: '+52 871 337 5315' },
-            ]
+            ],
         },
         {
             id: 'd2',
@@ -36,17 +37,34 @@ export default {
                 { id: 't3', icon: Asp, value: 'ASP.NET' },
                 { id: 't4', icon: Database, value: 'SQL & MySQL' },
                 { id: 't5', icon: Css, value: 'CSS' },
-            ]
+            ],
         },
         {
             id: 'd3',
             title: 'Empresas',
             fields: [
-                { id: 'e1', icon: Smbs, value: 'Desarrollador Web/ Móvil Full Stack en SMBS Solutions (2019 - Presente)' },
-                { id: 'e2', icon: Developmx, value: 'Desarrollador Full stack en Develop Mx (2017 - 2019)' },
-                { id: 'e3', icon: Freelance, value: 'Desarrollador Freelance (2016 - 2019)' },
-                { id: 'e4', icon: Gtec, value: 'Capacitador G-TEC Computer Education (2016 - 2017)' },
-            ]
-        }
-    ]
-}
+                {
+                    id: 'e1',
+                    icon: Smbs,
+                    value:
+                        'Desarrollador Web/ Móvil Full Stack en SMBS Solutions (2019 - Presente)',
+                },
+                {
+                    id: 'e2',
+                    icon: Developmx,
+                    value: 'Desarrollador Full stack en Develop Mx (2017 - 2019)',
+                },
+                {
+                    id: 'e3',
+                    icon: Freelance,
+                    value: 'Desarrollador Freelance (2016 - 2019)',
+                },
+                {
+                    id: 'e4',
+                    icon: Gtec,
+                    value: 'Capacitador G-TEC Computer Education (2016 - 2017)',
+                },
+            ],
+        },
+    ],
+};

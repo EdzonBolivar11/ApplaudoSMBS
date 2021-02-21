@@ -1,12 +1,10 @@
 import React, {FunctionComponent, useState} from 'react';
-import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
   Text,
   ImageBackground,
   TouchableWithoutFeedback,
-  Image,
 } from 'react-native';
 import {SerieProps} from '../../../../utils/Types';
 import NoImage from './../../../../assets/img/no-img.jpg';
@@ -21,6 +19,8 @@ const Serie: FunctionComponent<SerieProps> = (props) => {
       ? serie?.attributes?.titles['en']
       : serie?.attributes?.titles['en_jp']
       ? serie?.attributes?.titles['en_jp']
+      : serie?.attributes?.titles['en_kr']
+      ? serie?.attributes?.titles['en_kr']
       : 'Sin título';
 
   return (
@@ -33,7 +33,7 @@ const Serie: FunctionComponent<SerieProps> = (props) => {
               ? {uri: serie?.attributes?.posterImage?.large}
               : NoImage
           }
-          onError={(e) => setFailedImage(true)}
+          onError={() => setFailedImage(true)}
         />
         <View style={styles.overlay}>
           <Text style={styles.title} numberOfLines={2}>
