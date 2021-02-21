@@ -1,44 +1,104 @@
-import React, { FunctionComponent, useState } from 'react';
-import PropTypes from 'prop-types';
-import { View, StyleSheet, FlatList, Text } from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {FunctionComponent, useEffect, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import Serie from './Serie';
-import { CategoryListProps } from '../../../utils/Types';
-import useAxios from 'axios-hooks';
+import {CategoryListProps} from '../../../utils/Types';
 import Colors from '../../../utils/Theme/Colors';
+import Skeleton from './Skeleton';
+import axios from 'axios';
 
 const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
-    const { list, type } = props;
-    const [animeManga, setAnimeManga] = useState(type);
-    const [{ data, loading, error }, refetch] = useAxios(list?.relationships[animeManga]?.links?.related);
+  const {list, type} = props;
 
-    console.log(data?.data);
+  const [nextLink, setNextLink] = useState('');
+  const [series, setSeries] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
 
-    return (
-        <View style={styles.list}>
-            <Text style={styles.title}>{list?.attributes?.title}</Text>
-            <FlatList
-                data={data?.data}
-                renderItem={({ item, index }) => <Serie serie={item}/>}
-                 showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item?.id}
-                horizontal={true}
-            /> 
-        </View>
-    )
-}
+  const loadMore = async () => {
+    if (nextLink === '' || nextLink === undefined) {
+      return;
+    }
+    setLoading(true);
+    await axios
+      .get(nextLink)
+      .then(({data}) => {
+        setNextLink(data?.links?.next);
+        setSeries([...series, ...data?.data]);
+      })
+      .catch(console.log);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const loadOnce = async () => {
+      await axios
+        .get(list?.relationships[type]?.links?.related)
+        .then(({data}) => {
+          setSeries([...series, ...data?.data]);
+          setNextLink(data?.links?.next);
+        })
+        .catch(console.log);
+    };
+    loadOnce();
+  }, []);
+
+  const renderFooter: any = () =>
+    loading && (
+      <View style={styles.wrapperIndicator}>
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size="small"
+          color="#999"
+        />
+      </View>
+    );
+
+  return (
+    <View style={styles.list}>
+      <Text style={styles.title}>{list?.attributes?.title}</Text>
+      {series.length === 0 ? (
+        <Skeleton type="series" />
+      ) : (
+        <FlatList
+          data={series}
+          renderItem={({item}) => <Serie serie={item} />}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item: any) => item?.id}
+          horizontal={true}
+          onEndReached={() => loadMore()}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={() => renderFooter()}
+        />
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    list: {
-        flex: 1,
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 16,
-        color: Colors.black,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    }
+  list: {
+    flex: 1,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 16,
+    color: Colors.black,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  activityIndicator: {
+    marginRight: 10,
+  },
+  wrapperIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+  },
 });
 
 CategoryList.defaultProps = {};

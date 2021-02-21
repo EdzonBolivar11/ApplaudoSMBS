@@ -23,6 +23,7 @@ const index: FunctionComponent<ScreenProps> = (props) => {
     scroll,
     children,
     gradientColors,
+    useScrollview
   } = props;
 
   const renderStatusBar = () => {
@@ -52,20 +53,8 @@ const index: FunctionComponent<ScreenProps> = (props) => {
         easing="ease-out"
         useNativeDriver>
         {true ? (
-          false ? (
-            <ScrollView
-              bounces={refreshEnabled && scrollBounces}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{flexGrow: 1}}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={() => {}}
-                  progressViewOffset={20}
-                />
-              }>
-              {children}
-            </ScrollView>
+          !useScrollview ? (
+            children
           ) : (
             <ScrollView bounces={false} contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
               {children}
@@ -98,6 +87,7 @@ index.propTypes = {
     PropTypes.node,
   ]).isRequired,
   gradientColors: PropTypes.array,
+  useScrollview: PropTypes.bool,
 };
 
 index.defaultProps = {
@@ -106,7 +96,8 @@ index.defaultProps = {
   refreshing: false,
   onRefresh: () => {},
   scroll: true,
-  gradientColors: []
+  gradientColors: [],
+  useScrollview: true,
 };
 
 export default index;

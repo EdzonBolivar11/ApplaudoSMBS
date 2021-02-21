@@ -1,3 +1,4 @@
+import { SkeletonPlaceholder } from 'react-native-skeleton-placeholder';
 import { ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -5,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 export type RootStack = {
     Profile: undefined;
     Home: undefined;
-}
+};
 
 type ProfileScreenNavigationProp = StackNavigationProp<RootStack, 'Profile'>;
 
@@ -43,6 +44,7 @@ export interface ScreenProps {
     onRefresh?: () => {};
     scroll?: boolean;
     gradientColors?: string[];
+    useScrollview?: boolean;
 }
 
 //Categories
@@ -53,4 +55,9 @@ export interface CategoryListProps {
 
 export interface SerieProps {
     serie: any;
+}
+
+//Skeleton
+export interface SkeletonProps {
+    type: string;
 }
