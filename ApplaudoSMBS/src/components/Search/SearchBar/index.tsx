@@ -9,7 +9,13 @@ import {SearchBarProps} from '../../../utils/Types';
 import Colors from '../../../utils/Theme/Colors';
 
 const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
-  const {searchText, setSearchText, selectedItem, onChangeSelectedItem} = props;
+  const {
+    searchText,
+    setSearchText,
+    selectedItem,
+    onChangeSelectedItem,
+    typeEnabled,
+  } = props;
 
   const handleValueChange = (value: string) => {
     if (value !== 'tipo') {
@@ -21,25 +27,27 @@ const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
   return (
     <View style={styles.searchBar}>
       <View style={styles.pickerWrapper}>
-        <RNPickerSelect
-          style={{
-            inputAndroid: styles.inputPicker,
-            inputIOS: styles.inputPicker,
-            iconContainer: styles.pickerIcon,
-          }}
-          onValueChange={(value) => handleValueChange(value)}
-          value={selectedItem}
-          placeholder={{label: 'Tipo', value: 'tipo'}}
-          items={[
-            {label: 'Anime', value: 'anime'},
-            {label: 'Manga', value: 'manga'},
-          ]}
-          useNativeAndroidPickerStyle={false}
-          textInputProps={{underlineColorAndroid: 'cyan'}}
-          Icon={() => {
-            return <Ionicons name="chevron-down-sharp" color="gray" />;
-          }}
-        />
+        {typeEnabled && (
+          <RNPickerSelect
+            style={{
+              inputAndroid: styles.inputPicker,
+              inputIOS: styles.inputPicker,
+              iconContainer: styles.pickerIcon,
+            }}
+            onValueChange={(value) => handleValueChange(value)}
+            value={selectedItem}
+            placeholder={{label: 'Tipo', value: 'tipo'}}
+            items={[
+              {label: 'Anime', value: 'anime'},
+              {label: 'Manga', value: 'manga'},
+            ]}
+            useNativeAndroidPickerStyle={false}
+            textInputProps={{underlineColorAndroid: 'cyan'}}
+            Icon={() => {
+              return <Ionicons name="chevron-down-sharp" color="gray" />;
+            }}
+          />
+        )}
       </View>
       <Input
         style={styles.input}
@@ -112,6 +120,7 @@ SearchBar.defaultProps = {
   setSearchText: () => {},
   selectedItem: 'anime',
   onChaneSelectedItem: () => {},
+  typeEnabled: true,
 };
 
 SearchBar.propTypes = {
@@ -119,6 +128,7 @@ SearchBar.propTypes = {
   setSearchText: PropTypes.func,
   selectedItem: PropTypes.string,
   onChangeSelectedItem: PropTypes.func,
+  typeEnabled: PropTypes.bool,
 };
 
 export default SearchBar;

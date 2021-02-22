@@ -8,6 +8,16 @@ type SearchStack = {
     DetailsSerie: undefined;
 };
 
+type HomeStack = {
+    Home: undefined;
+    DetailsSerie: undefined;
+};
+type HomeScreenNavigationProp = StackNavigationProp<HomeStack, 'Home'>;
+
+export interface HomeProps {
+    navigation: HomeScreenNavigationProp;
+}
+
 export interface Field {
     id: string;
     icon: ImageSourcePropType;
@@ -41,18 +51,21 @@ export interface ScreenProps {
 export interface CategoryListProps {
     list: any;
     type: string;
+    navigation: HomeScreenNavigationProp;
 }
 
 export interface SerieProps {
     serie: any;
+    navigation: HomeScreenNavigationProp;
 }
 
 //SearchBar
 export interface SearchBarProps {
     searchText: string;
     setSearchText: (value: string) => {};
-    selectedItem: string;
-    onChangeSelectedItem: (value: string) => {};
+    selectedItem?: string;
+    onChangeSelectedItem?: (value: string) => {};
+    typeEnabled?: false;
 }
 
 //SearchedItem
