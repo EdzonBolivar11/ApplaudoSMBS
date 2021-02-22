@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
@@ -9,8 +9,13 @@ import {
 } from 'react-native';
 import {SearchedItemProps} from '../../../utils/Types';
 
+//Images
+const NoImage = require('./../../../assets/img/no-img.jpg');
+
 const SearchedItem: FunctionComponent<SearchedItemProps> = (props) => {
   const {item, onPressItem} = props;
+
+  const [failedImage, setFailedImage] = useState(false);
 
   const renderTitle = () =>
     item?.attributes?.titles['en']
@@ -26,16 +31,19 @@ const SearchedItem: FunctionComponent<SearchedItemProps> = (props) => {
       <View style={styles.wrapper}>
         <Image
           style={styles.image}
-          source={{
-            uri: item?.attributes?.posterImage?.large,
-          }}
+          source={
+            !failedImage ? {uri: item?.attributes?.posterImage?.large} : NoImage
+          }
+          onError={() => setFailedImage(true)}
         />
         <View style={styles.wrapperInfo}>
           <Text style={styles.title} numberOfLines={1}>
             {renderTitle()}
           </Text>
           <Text style={styles.synopsis} numberOfLines={6}>
-            {item?.attributes?.synopsis}
+            {item?.attributes?.synopsis && item?.attributes?.synopsis !== '\n\n'
+              ? item?.attributes?.synopsis
+              : 'No tiene sinopsis'}
           </Text>
         </View>
       </View>

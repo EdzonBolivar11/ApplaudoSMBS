@@ -1,12 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  ActivityIndicator,
-} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 import Serie from './Serie';
 import {CategoryListProps} from '../../../utils/Types';
 import Colors from '../../../utils/Theme/Colors';
@@ -59,17 +53,6 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
     toTop();
     loadSeries();
   }, [type]);
-
-  const renderFooter: any = () =>
-    loading && (
-      <View style={styles.wrapperIndicator}>
-        <ActivityIndicator
-          style={styles.activityIndicator}
-          size="small"
-          color="#999"
-        />
-      </View>
-    );
 
   return hasSeries ? (
     <View style={styles.list}>
