@@ -66,10 +66,19 @@ const DetailsSerie = (props) => {
   };
 
   const shareSerie = async () => {
+    const sinopsis = item?.attributes?.synopsis
+      ? 'trata de ' + item?.attributes?.synopsis
+      : '';
+    const videoYoutube =
+      item?.attributes?.youtubeVideoId !== '' &&
+      item?.attributes?.youtubeVideoId
+        ? 'Si quieres ver un poco más de esta serie ve a https://www.youtube.com/watch?v=' +
+          item?.attributes?.youtubeVideoId +
+          ' para que puedas ver el video de la serie.'
+        : '';
     const options = {
       title: renderTitle(),
-      message:
-        'Serie de ' + item?.type?.charAt(0).toUpperCase() + item?.type.slice(1),
+      message: `Te quiero compartir la serie de "${renderTitle()}" ${sinopsis}. ${videoYoutube}`,
     };
 
     try {
@@ -97,20 +106,21 @@ const DetailsSerie = (props) => {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.iconsWrapper}>
-          {item?.attributes?.youtubeVideoId !== '' && (
-            <TouchableWithoutFeedback
-              onPress={() =>
-                Linking.openURL(
-                  'vnd.youtube://watch?v=' + item?.attributes?.youtubeVideoId,
-                )
-              }>
-              <Ionicons
-                name="logo-youtube"
-                color={Colors.red}
-                style={styles.backIcon}
-              />
-            </TouchableWithoutFeedback>
-          )}
+          {item?.attributes?.youtubeVideoId !== '' &&
+            item?.attributes?.youtubeVideoId && (
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  Linking.openURL(
+                    'vnd.youtube://watch?v=' + item?.attributes?.youtubeVideoId,
+                  )
+                }>
+                <Ionicons
+                  name="logo-youtube"
+                  color={Colors.red}
+                  style={styles.backIcon}
+                />
+              </TouchableWithoutFeedback>
+            )}
           <TouchableWithoutFeedback onPress={() => shareSerie()}>
             <Ionicons
               name="share-social-outline"
