@@ -46,28 +46,19 @@ const Skeleton: FunctionComponent<SkeletonProps> = (props) => {
           </SkeletonPlaceholder>
         );
       case 'search':
-        {
-          /*
-          <SkeletonPlaceholder>
-            <View style={styles.wrapperSearched}>
-              <View style={styles.skeletonSearchImage} />
-              <View style={styles.skeletonSearchText} />
-            </View>
-          </SkeletonPlaceholder> */
-        }
         return (
-          <SkeletonPlaceholder>
-            <View style={styles.wrapperSearched}>
-              {items.map((itemSerie) => (
-                <View
-                  style={styles.wrapperSerieSearched}
-                  key={itemSerie + 'sSkeleton'}>
-                  <View style={styles.skeletonSearchImage} />
-                  <View style={styles.skeletonSearchText} />
-                </View>
-              ))}
-            </View>
-          </SkeletonPlaceholder>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <SkeletonPlaceholder>
+              <View style={styles.wrapperSearched}>
+                {items.map((itemSerie) => (
+                  <View
+                    style={styles.wrapperSerieSearched}
+                    key={itemSerie + 'sSkeleton'}
+                  />
+                ))}
+              </View>
+            </SkeletonPlaceholder>
+          </ScrollView>
         );
       default:
         return null;
@@ -105,6 +96,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: 'row',
     width: '100%',
+    height: 130,
   },
   skeletonSearchImage: {
     height: 130,
