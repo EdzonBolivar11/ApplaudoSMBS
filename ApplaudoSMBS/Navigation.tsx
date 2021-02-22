@@ -54,7 +54,18 @@ const Navigation = () => {
 
   const SearchStack = createStackNavigator();
   const SearchStackScreen = () => (
-    <SearchStack.Navigator initialRouteName="Search" headerMode="none">
+    <SearchStack.Navigator
+      initialRouteName="Search"
+      headerMode="none"
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        transitionSpec: {
+          open: configAnimation,
+          close: configAnimation,
+        },
+        animationEnabled: true,
+      }}>
       <SearchStack.Screen name="Search" component={Search} />
       <SearchStack.Screen
         name="DetailsSerie"
@@ -66,7 +77,18 @@ const Navigation = () => {
 
   const FavoritesStack = createStackNavigator();
   const FavoritesStackScreen = () => (
-    <FavoritesStack.Navigator initialRouteName="Favorites" headerMode="none">
+    <FavoritesStack.Navigator
+      initialRouteName="Favorites"
+      headerMode="none"
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        transitionSpec: {
+          open: configAnimation,
+          close: configAnimation,
+        },
+        animationEnabled: true,
+      }}>
       <FavoritesStack.Screen name="Favorites" component={Favorites} />
       <FavoritesStack.Screen
         name="DetailsSerie"
