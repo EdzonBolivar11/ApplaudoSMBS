@@ -11,7 +11,7 @@ import NoImage from './../../../../assets/img/no-img.jpg';
 import Colors from '../../../../utils/Theme/Colors';
 
 const Serie: FunctionComponent<SerieProps> = (props) => {
-  const {serie} = props;
+  const {serie, navigation} = props;
   const [failedImage, setFailedImage] = useState(false);
 
   const renderTitle = () =>
@@ -24,7 +24,8 @@ const Serie: FunctionComponent<SerieProps> = (props) => {
       : 'Sin título';
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback
+      onPress={() => navigation.navigate('DetailsSerie', {item: serie})}>
       <View style={styles.serieCard}>
         <ImageBackground
           style={[styles.image, StyleSheet.absoluteFillObject]}

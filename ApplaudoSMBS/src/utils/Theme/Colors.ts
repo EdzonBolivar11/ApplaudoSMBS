@@ -6,6 +6,7 @@ const gray2 = '#666666';
 const whatsapp = '#40c351';
 const red = '#ff0000';
 const share = '#2188be';
+const yellow = '#f0d405';
 
 //LinearGradient
 const gradient1 = '#fe5223';
@@ -23,6 +24,7 @@ export default {
     whatsapp,
     red,
     share,
+    yellow,
     gradient1,
     gradient2,
     gradient3,

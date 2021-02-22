@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,21 +8,34 @@ import {
   TouchableWithoutFeedback,
   Linking,
 } from 'react-native';
+import {connect} from 'react-redux';
 import Screen from '../../../components/Screen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../../../utils/Theme/Colors';
 import Share from 'react-native-share';
+/* import LocalStorage from './../../../utils/Storage'; */
 
 //Images
 const NoImage = require('./../../../assets/img/no-img.jpg');
 
 const DetailsSerie = (props) => {
-  const {route, navigation} = props;
+  const {route, navigation, SetFavorite, favoriteSeries} = props;
 
   const [failedCoverImage, setFailedCoverImage] = useState(false);
   const [failedPosterImage, setFailedPosterImage] = useState(false);
+  const [isFavorite, setFavorite] = useState(false);
   const [item] = useState(route?.params?.item);
-  console.log(route?.params?.item);
+
+  const checkFavorite = () =>
+    setFavorite(favoriteSeries.some((serie: any) => serie?.id === item?.id));
+
+  useEffect(() => {
+    checkFavorite();
+  }, []);
+
+  useEffect(() => {
+    checkFavorite();
+  }, [favoriteSeries]);
 
   const renderTitle = () =>
     item?.attributes?.titles['en']
@@ -66,6 +79,10 @@ const DetailsSerie = (props) => {
     }
   };
 
+  const onPressFavorite = () => {
+    SetFavorite(item);
+  };
+
   return (
     <Screen>
       <View style={styles.header}>
@@ -98,6 +115,13 @@ const DetailsSerie = (props) => {
             <Ionicons
               name="share-social-outline"
               color={Colors.share}
+              style={styles.backIcon}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => onPressFavorite()}>
+            <Ionicons
+              name={isFavorite ? 'ios-heart-sharp' : 'ios-heart-outline'}
+              color={Colors.gradient1}
               style={styles.backIcon}
             />
           </TouchableWithoutFeedback>
@@ -214,4 +238,17 @@ DetailsSerie.defaultProps = {};
 
 DetailsSerie.propTypes = {};
 
-export default DetailsSerie;
+const mapStateToProps = (state: any) => {
+  return {
+    favoriteSeries: state.Favorites.favoriteSeries,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    SetFavorite: (serie: any) =>
+      dispatch({type: 'SET_FAVORITE', payload: serie}),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsSerie);

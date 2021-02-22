@@ -9,7 +9,7 @@ import axios from 'axios';
 import LoadingMore from '../../LoadingMore';
 
 const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
-  const {list, type} = props;
+  const {list, type, navigation} = props;
 
   const seriesRef = useRef<any>();
   const [nextLink, setNextLink] = useState('');
@@ -63,7 +63,9 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
         <FlatList
           ref={seriesRef}
           data={series}
-          renderItem={({item}) => <Serie serie={item} />}
+          renderItem={({item}) => (
+            <Serie serie={item} navigation={navigation} />
+          )}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item: any) => item?.id}

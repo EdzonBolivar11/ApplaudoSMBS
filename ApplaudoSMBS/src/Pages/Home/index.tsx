@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
 import Screen from './../../components/Screen';
 import CategoryList from '../../components/Home/CategoryList';
 import axios from 'axios';
@@ -10,8 +10,11 @@ import Skeleton from '../../components/Home/CategoryList/Skeleton';
 import Tabs from '../../components/Home/CategoryList/Tabs';
 import {apiCategory} from '../../utils/Constants';
 import LoadingMore from '../../components/LoadingMore';
+import {HomeProps} from '../../utils/Types';
 
-const index = () => {
+const Home: FunctionComponent<HomeProps> = (props) => {
+  const {navigation} = props;
+
   const flatListRef = useRef<any>({});
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -80,7 +83,9 @@ const index = () => {
           <FlatList
             ref={flatListRef}
             data={categories}
-            renderItem={({item}) => <CategoryList list={item} type={type} />}
+            renderItem={({item}) => (
+              <CategoryList list={item} type={type} navigation={navigation} />
+            )}
             keyExtractor={(item: any) => item?.id}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -103,8 +108,8 @@ const styles = StyleSheet.create({
   },
 });
 
-index.defaultProps = {};
+Home.defaultProps = {};
 
-index.propTypes = {};
+Home.propTypes = {};
 
-export default index;
+export default Home;
