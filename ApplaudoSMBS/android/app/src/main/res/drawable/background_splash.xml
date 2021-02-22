@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/white" />
+    <item android:width="200dp" android:layout_marginTop="24dp" android:height="80dp" android:drawable="@drawable/logosmbs" android:gravity="center" />
+
+</layer-list>
