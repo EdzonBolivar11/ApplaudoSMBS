@@ -19,6 +19,27 @@ const Search: FunctionComponent<SearchProps> = (props) => {
   const [type, setType] = useState('anime');
   const [loading, setLoading] = useState(false);
   const [nextLink, setNextLink] = useState('');
+  const [firstSearch, setFirstSearch] = useState(false);
+
+  const loadMore = async () => {
+    console.log('loading', loading);
+    if (loading) {
+      return;
+    }
+    console.log('nextLink', nextLink);
+    if (nextLink === '' || nextLink === undefined) {
+      return;
+    }
+    setLoading(true);
+    await axios
+      .get(nextLink)
+      .then(({data}) => {
+        setNextLink(data?.links?.next);
+        setSeries([...series, ...data?.data]);
+      })
+      .catch((err: any) => console.log('Error in loadMore ', console.log(err)));
+    setLoading(false);
+  };
 
   const handleSearch = async (text: string) => {
     if (text !== '') {
@@ -40,6 +61,8 @@ const Search: FunctionComponent<SearchProps> = (props) => {
         handleSearch(searchText);
       } else {
         setSeries([]);
+        setNextLink('');
+        setFirstSearch(false);
       }
     }, 500);
     return () => clearTimeout(timeoutId);
@@ -49,7 +72,7 @@ const Search: FunctionComponent<SearchProps> = (props) => {
     navigation.navigate('DetailsSerie', {item});
 
   return (
-    <Screen>
+    <Screen useScrollview={false}>
       <SearchBar
         searchText={searchText}
         setSearchText={(value: string) => setSearchText(value)}
@@ -57,30 +80,25 @@ const Search: FunctionComponent<SearchProps> = (props) => {
         onChangeSelectedItem={(value: string) => setType(value)}
       />
       <View style={styles.wrapperList}>
-        {
-          /* series?.data?.length > 0  */ false ? (
-            <>
-              <Skeleton type="search" />
-              <SearchedItem />
-            </>
-          ) : (
-            <FlatList
-              data={series}
-              renderItem={({item}) => (
-                <SearchedItem
-                  item={item}
-                  onPressItem={(serie: any) => onPressItem(serie)}
-                />
-              )}
-              keyExtractor={(item: any) => item?.id}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              /*    onEndReached={() => loadMore()}
-              onEndReachedThreshold={0.1} */
-              ListFooterComponent={() => <LoadingMore loading={loading} />}
-            />
-          )
-        }
+        {loading && series.length === 0 ? (
+          <Skeleton type="search" />
+        ) : (
+          <FlatList
+            data={series}
+            renderItem={({item}) => (
+              <SearchedItem
+                item={item}
+                onPressItem={(serie: any) => onPressItem(serie)}
+              />
+            )}
+            keyExtractor={(item: any) => item?.id}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            onEndReached={() => loadMore()}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={() => <LoadingMore loading={loading} />}
+          />
+        )}
       </View>
     </Screen>
   );
@@ -90,7 +108,7 @@ const styles = StyleSheet.create({
   wrapperList: {
     paddingHorizontal: 15,
     paddingVertical: 15,
-    width: '100%',
+    flex: 1,
   },
 });
 
