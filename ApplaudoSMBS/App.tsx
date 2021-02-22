@@ -1,7 +1,12 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import Navigation from './Navigation';
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <Fragment>
       <Navigation />
