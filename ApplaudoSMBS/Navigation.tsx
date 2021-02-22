@@ -14,12 +14,35 @@ import DetailsSerie from './src/Pages/Series/DetailSerie';
 
 const Tab = createBottomTabNavigator();
 
+const configAnimation = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
 const Navigation = () => {
   const ref = useRef(null);
 
   const HomeStack = createStackNavigator();
   const HomeStackScreen = () => (
-    <HomeStack.Navigator initialRouteName="Home" headerMode="none">
+    <HomeStack.Navigator
+      initialRouteName="Home"
+      headerMode="none"
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        transitionSpec: {
+          open: configAnimation,
+          close: configAnimation,
+        },
+        animationEnabled: true,
+      }}>
       <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen
         name="DetailsSerie"
