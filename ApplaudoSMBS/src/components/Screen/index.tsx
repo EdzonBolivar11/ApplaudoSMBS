@@ -1,6 +1,6 @@
 // Vendors
 import React, {FunctionComponent} from 'react';
-import {ScrollView, StatusBar, StyleSheet} from 'react-native';
+import {Platform, ScrollView, StatusBar, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -16,9 +16,17 @@ const fadeIn = {
 const Screen: FunctionComponent<ScreenProps> = (props) => {
   const {children, safeArewViewColor = false, useScrollview} = props;
 
+  const renderStatusBar = () =>
+    Platform.OS === 'ios' ? (
+      <StatusBar translucent barStyle="dark-content" />
+    ) : (
+      <StatusBar translucent barStyle="light-content" />
+    );
+
   return (
     <>
-      <StatusBar translucent barStyle="dark-content" />
+      {renderStatusBar()}
+
       <SafeAreaView
         style={[
           styles.safeArea,

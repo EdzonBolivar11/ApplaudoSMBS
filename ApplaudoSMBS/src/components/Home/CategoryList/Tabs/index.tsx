@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Platform} from 'react-native';
 import Colors from '../../../../utils/Theme/Colors';
 import {TabsProps} from '../../../../utils/Types';
 
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     width: '80%',
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: Platform.OS === 'android' ? 15 : 0,
   },
   wrapperTabs: {
     flexDirection: 'row',
