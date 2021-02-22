@@ -9,6 +9,7 @@ import axios from 'axios';
 import Skeleton from '../../components/Home/CategoryList/Skeleton';
 import Tabs from '../../components/Home/CategoryList/Tabs';
 import {apiCategory} from '../../utils/Constants';
+import LoadingMore from '../../components/LoadingMore';
 
 const index = () => {
   const flatListRef = useRef<any>({});
@@ -66,11 +67,6 @@ const index = () => {
     reloadTypes();
   }, [type]);
 
-  const renderFooter: any = () =>
-    loading && (
-      <ActivityIndicator style={styles.mb10} size="small" color="#999" />
-    );
-
   return (
     <Screen useScrollview={false}>
       <Tabs
@@ -90,7 +86,7 @@ const index = () => {
             showsHorizontalScrollIndicator={false}
             onEndReached={() => loadMore()}
             onEndReachedThreshold={0.1}
-            ListFooterComponent={() => renderFooter()}
+            ListFooterComponent={() => <LoadingMore loading={loading} />}
             onRefresh={() => reloadTypes()}
             refreshing={refreshing}
           />
@@ -105,7 +101,6 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     flex: 1,
   },
-  mb10: {marginBottom: 10},
 });
 
 index.defaultProps = {};

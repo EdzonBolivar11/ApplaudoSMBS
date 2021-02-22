@@ -1,6 +1,8 @@
 import React, {useRef} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Pages
@@ -8,11 +10,25 @@ import Profile from './src/Pages/Profile';
 import Home from './src/Pages/Home';
 import Search from './src/Pages/Search';
 import Favorites from './src/Pages/Favorites';
+import DetailsSerie from './src/Pages/Series/DetailSerie';
 
 const Tab = createBottomTabNavigator();
 
 const Navigation = () => {
   const ref = useRef(null);
+
+  const SearchStack = createStackNavigator();
+
+  const SearchStackScreen = () => (
+    <SearchStack.Navigator initialRouteName="SearchStack" headerMode="none">
+      <SearchStack.Screen name="Search" component={Search} />
+      <SearchStack.Screen
+        name="DetailsSerie"
+        component={DetailsSerie}
+        initialParams={{item: {}}}
+      />
+    </SearchStack.Navigator>
+  );
 
   const GetIcon = (
     route: any,
@@ -54,7 +70,7 @@ const Navigation = () => {
           inactiveTintColor: 'gray',
         }}>
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name="Search" component={SearchStackScreen} />
         <Tab.Screen name="Favorites" component={Favorites} />
         <Tab.Screen name="Profile" component={Profile} />
       </Tab.Navigator>
