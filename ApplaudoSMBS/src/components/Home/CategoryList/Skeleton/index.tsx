@@ -9,41 +9,68 @@ const Skeleton: FunctionComponent<SkeletonProps> = (props) => {
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const renderSkeleton = () => {
-    if (type === 'category') {
-      return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {items.map((item) => (
-            <SkeletonPlaceholder key={item + 'cSkeleton'}>
-              <View style={styles.wrapper}>
-                <View style={styles.skeletonTitle} />
-                <View style={styles.skeletonImageWrapper}>
-                  {items.map((itemSerie) => (
-                    <View
-                      key={itemSerie + 'csSkeleton'}
-                      style={styles.skeletonImage}
-                    />
-                  ))}
+    switch (type) {
+      case 'category':
+        return (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {items.map((item) => (
+              <SkeletonPlaceholder key={item + 'cSkeleton'}>
+                <View style={styles.wrapper}>
+                  <View style={styles.skeletonTitle} />
+                  <View style={styles.skeletonImageWrapper}>
+                    {items.map((itemSerie) => (
+                      <View
+                        key={itemSerie + 'csSkeleton'}
+                        style={styles.skeletonImage}
+                      />
+                    ))}
+                  </View>
                 </View>
+              </SkeletonPlaceholder>
+            ))}
+          </ScrollView>
+        );
+      case 'series':
+        return (
+          <SkeletonPlaceholder>
+            <View style={styles.wrapperSeries}>
+              <View style={styles.skeletonImageWrapper}>
+                {items.map((itemSerie) => (
+                  <View
+                    key={itemSerie + 'ssSkeleton'}
+                    style={styles.skeletonImage}
+                  />
+                ))}
               </View>
-            </SkeletonPlaceholder>
-          ))}
-        </ScrollView>
-      );
-    } else {
-      return (
-        <SkeletonPlaceholder>
-          <View style={styles.wrapperSeries}>
-            <View style={styles.skeletonImageWrapper}>
+            </View>
+          </SkeletonPlaceholder>
+        );
+      case 'search':
+        {
+          /*
+          <SkeletonPlaceholder>
+            <View style={styles.wrapperSearched}>
+              <View style={styles.skeletonSearchImage} />
+              <View style={styles.skeletonSearchText} />
+            </View>
+          </SkeletonPlaceholder> */
+        }
+        return (
+          <SkeletonPlaceholder>
+            <View style={styles.wrapperSearched}>
               {items.map((itemSerie) => (
                 <View
-                  key={itemSerie + 'ssSkeleton'}
-                  style={styles.skeletonImage}
-                />
+                  style={styles.wrapperSerieSearched}
+                  key={itemSerie + 'sSkeleton'}>
+                  <View style={styles.skeletonSearchImage} />
+                  <View style={styles.skeletonSearchText} />
+                </View>
               ))}
             </View>
-          </View>
-        </SkeletonPlaceholder>
-      );
+          </SkeletonPlaceholder>
+        );
+      default:
+        return null;
     }
   };
 
@@ -69,6 +96,25 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 4,
     marginRight: 10,
+  },
+  wrapperSearched: {
+    flexDirection: 'column',
+    marginTop: 10,
+  },
+  wrapperSerieSearched: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    width: '100%',
+  },
+  skeletonSearchImage: {
+    height: 130,
+    width: 130,
+    marginRight: 10,
+  },
+  skeletonSearchText: {
+    flex: 1,
+    height: 130,
+    marginLeft: 10,
   },
 });
 

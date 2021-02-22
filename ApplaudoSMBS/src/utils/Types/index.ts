@@ -3,12 +3,10 @@ import { ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 //Navigation
-export type RootStack = {
-    Profile: undefined;
-    Home: undefined;
+type SearchStack = {
+    Search: undefined;
+    DetailsSerie: undefined;
 };
-
-type ProfileScreenNavigationProp = StackNavigationProp<RootStack, 'Profile'>;
 
 export interface Field {
     id: string;
@@ -47,6 +45,33 @@ export interface CategoryListProps {
 
 export interface SerieProps {
     serie: any;
+}
+
+//SearchBar
+export interface SearchBarProps {
+    searchText: string;
+    setSearchText: (value: string) => {};
+    selectedItem: string;
+    onChangeSelectedItem: (value: string) => {};
+}
+
+//SearchedItem
+export interface SearchedItemProps {
+    item: any;
+    onPressItem: (item: any) => {};
+}
+
+//Search
+type SearchScreenNavigationProp = StackNavigationProp<SearchStack, 'Search'>;
+export interface SearchProps {
+    navigation: SearchScreenNavigationProp;
+}
+
+
+//LoadingMore
+export interface LoadingMoreProps {
+    loading: boolean;
+    horizontalFlatList?: boolean;
 }
 
 //Skeleton
