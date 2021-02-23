@@ -25,7 +25,7 @@ const Favorites = (props) => {
     navigation.navigate('DetailsSerie', {item});
 
   return (
-    <Screen>
+    <Screen useScrollview={false}>
       <Text style={styles.title}>Series favoritas</Text>
       <SearchBar
         searchText={searchText}
@@ -41,7 +41,7 @@ const Favorites = (props) => {
               onPressItem={(serie: any) => onPressItem(serie)}
             />
           )}
-          keyExtractor={(item: any) => item?.id}
+          keyExtractor={(item: any, index: number) => 'f' + item?.id + index}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           /*    onEndReached={() => loadMore()}

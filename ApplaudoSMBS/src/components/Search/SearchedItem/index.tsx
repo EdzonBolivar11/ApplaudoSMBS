@@ -24,6 +24,10 @@ const SearchedItem: FunctionComponent<SearchedItemProps> = (props) => {
       ? item?.attributes?.titles['en_jp']
       : item?.attributes?.titles['en_kr']
       ? item?.attributes?.titles['en_kr']
+      : item?.attributes?.titles['en_us']
+      ? item?.attributes?.titles['en_us']
+      : item?.attributes?.titles['en_cn']
+      ? item?.attributes?.titles['en_cn']
       : 'Sin título';
 
   return (
@@ -84,7 +88,7 @@ SearchedItem.defaultProps = {
 
 SearchedItem.propTypes = {
   item: PropTypes.object,
-  onPressItem: PropTypes.func,
+  onPressItem: PropTypes.func.isRequired,
 };
 
 export default SearchedItem;

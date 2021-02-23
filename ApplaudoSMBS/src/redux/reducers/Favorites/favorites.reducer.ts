@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import produce from 'immer';
+import { FavoritesState, SEARCH_FAVORITE, SET_FAVORITE } from './type';
 
-const initState = {
+const initState: FavoritesState = {
     favoriteSeries: [],
     filteredSeries: [],
 };
@@ -15,10 +16,10 @@ const getTitle = (item: any) =>
                 ? item?.attributes?.titles['en_kr']
                 : 'Sin título';
 
-const Series = (state = initState, action: any) =>
+const Favorites = (state = initState, action: any) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case 'SET_FAVORITE':
+            case SET_FAVORITE:
                 let currentSeries = [...state.favoriteSeries];
                 if (currentSeries.some(item => item?.id === action.payload?.id)) {
                     const newSeries = currentSeries.filter(item => item?.id !== action.payload?.id);
@@ -30,10 +31,9 @@ const Series = (state = initState, action: any) =>
                     draft.filteredSeries = [...currentSeries];
                 }
                 break;
-            case 'SEARCH_FAVORITE':
+            case SEARCH_FAVORITE:
                 const text = action.payload.toLowerCase();
                 if (action.payload !== '') {
-                    console.log(text);
                     draft.filteredSeries = draft.favoriteSeries.filter(item => getTitle(item).toLowerCase().includes(text));
                 } else {
                     draft.filteredSeries = [...draft.favoriteSeries];
@@ -44,4 +44,4 @@ const Series = (state = initState, action: any) =>
         }
     });
 
-export default Series;
+export default Favorites;

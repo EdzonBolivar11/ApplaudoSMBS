@@ -10,38 +10,33 @@ import Colors from '../../utils/Theme/Colors';
 import PersonalInformation from './info';
 
 const Profile = () => {
+  const onPressWhatsapp = () => {
+    Linking.openURL(
+      `whatsapp://send?text='Perfil de Edzon Bolivar'&phone=${PersonalInformation.phone}`,
+    );
+  };
+
+  const renderPersonalInfo = () => {
+    return PersonalInformation.data.map((section) => (
+      <Section key={section.id} section={section} />
+    ));
+  };
+
   return (
     <Screen safeArewViewColor={true}>
       <LinearGradient
         locations={[0, 0.2, 0.4, 0.55, 0.8]}
-        colors={[
-          Colors.gradient1,
-          Colors.gradient2,
-          Colors.gradient3,
-          Colors.gradient4,
-          Colors.gradient5,
-        ]}
+        colors={Colors.perfilGradientColors}
         style={styles.photoGradient}>
         <Image style={styles.photo} source={PersonalInformation.photo} />
         <Text style={styles.title}>{PersonalInformation.name}</Text>
         <Text style={styles.smallTitle}>{PersonalInformation.email}</Text>
       </LinearGradient>
-      <Button
-        iconLeft
-        onPress={() =>
-          Linking.openURL(
-            `whatsapp://send?text='Prueba técnica'&phone=${PersonalInformation.phone}`,
-          )
-        }
-        style={styles.button}>
+      <Button iconLeft onPress={() => onPressWhatsapp()} style={styles.button}>
         <Icon name="logo-whatsapp" style={{color: Colors.white}} />
         <Text style={{color: Colors.white}}>Contactar</Text>
       </Button>
-      <View style={styles.infoWrapper}>
-        {PersonalInformation.data.map((section) => (
-          <Section key={section.id} section={section} />
-        ))}
-      </View>
+      <View style={styles.infoWrapper}>{renderPersonalInfo()}</View>
     </Screen>
   );
 };

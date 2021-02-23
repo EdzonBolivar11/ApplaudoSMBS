@@ -35,7 +35,7 @@ export interface SectionProps {
 }
 
 export interface FieldProps {
-    field: Field;
+    field?: Field;
 }
 
 //Components
@@ -61,11 +61,11 @@ export interface SerieProps {
 
 //SearchBar
 export interface SearchBarProps {
-    searchText: string;
+    searchText?: string;
     setSearchText: (value: string) => {};
     selectedItem?: string;
-    onChangeSelectedItem?: (value: string) => {};
-    typeEnabled?: false;
+    onChangeSelectedItem: (value: string) => {};
+    typeEnabled?: boolean;
 }
 
 //SearchedItem
@@ -83,7 +83,7 @@ export interface SearchProps {
 
 //LoadingMore
 export interface LoadingMoreProps {
-    loading: boolean;
+    loading?: boolean;
     horizontalFlatList?: boolean;
 }
 

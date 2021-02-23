@@ -7,8 +7,9 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {SerieProps} from '../../../../utils/Types';
-import NoImage from './../../../../assets/img/no-img.jpg';
 import Colors from '../../../../utils/Theme/Colors';
+
+const NoImage = require('./../../../../assets/img/no-img.jpg');
 
 const Serie: FunctionComponent<SerieProps> = (props) => {
   const {serie, navigation} = props;
@@ -21,6 +22,10 @@ const Serie: FunctionComponent<SerieProps> = (props) => {
       ? serie?.attributes?.titles['en_jp']
       : serie?.attributes?.titles['en_kr']
       ? serie?.attributes?.titles['en_kr']
+      : serie?.attributes?.titles['en_us']
+      ? serie?.attributes?.titles['en_us']
+      : serie?.attributes?.titles['en_cn']
+      ? serie?.attributes?.titles['en_cn']
       : 'Sin título';
 
   return (

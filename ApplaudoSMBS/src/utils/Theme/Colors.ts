@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const white = '#fff';
 const black = '#272727';
 const gray = '#edebeb';
@@ -15,6 +16,14 @@ const gradient3 = '#fe730f';
 const gradient4 = '#fe8b05';
 const gradient5 = '#ff9400';
 
+const perfilGradientColors = [
+    gradient1,
+    gradient2,
+    gradient3,
+    gradient4,
+    gradient5,
+];
+
 export default {
     white,
     black,
@@ -30,4 +39,5 @@ export default {
     gradient3,
     gradient4,
     gradient5,
+    perfilGradientColors,
 };

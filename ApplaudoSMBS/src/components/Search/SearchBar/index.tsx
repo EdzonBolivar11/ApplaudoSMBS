@@ -119,15 +119,15 @@ SearchBar.defaultProps = {
   searchText: '',
   setSearchText: () => {},
   selectedItem: 'anime',
-  onChaneSelectedItem: () => {},
+  onChangeSelectedItem: () => {},
   typeEnabled: true,
 };
 
 SearchBar.propTypes = {
   searchText: PropTypes.string,
-  setSearchText: PropTypes.func,
+  setSearchText: PropTypes.func.isRequired,
   selectedItem: PropTypes.string,
-  onChangeSelectedItem: PropTypes.func,
+  onChangeSelectedItem: PropTypes.func.isRequired,
   typeEnabled: PropTypes.bool,
 };
 
