@@ -36,11 +36,13 @@ _Requerimientos de bonus_
 * ✅ Use ​offline​ ​persistence​. (Show to the user when app is offline)
 * 🟡 It must look well on ​landscape​ on phones at least.
 * ✅ Launch App’s Icon and Splash Screen
-* Tests. (Jest, Unit Tests, etc )
+* ❌ Tests. (Jest, Unit Tests, etc )
 * ✅ Transition animations.
 * ✅ Share the series name to all applications available. Any UI improvements are welcome
 * 🟡 Generate .apk and/or .ipa file of your app.
 
+
+Significados
 * ✅ Cumplido
 * ❌ No cumplido
 * 🟡 Falto algo
