@@ -1,68 +1,66 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 import {View, StyleSheet} from 'react-native';
+import {connect} from 'react-redux';
 import SearchBar from '../../components/Search/SearchBar';
 import Screen from '../../components/Screen';
 import SearchedItem from '../../components/Search/SearchedItem';
-import axios from 'axios';
-import {apiSearchText} from '../../utils/Constants';
+import api from '../../utils/Constants';
 import Skeleton from '../../components/Home/CategoryList/Skeleton';
 import {FlatList} from 'react-native-gesture-handler';
 import LoadingMore from '../../components/LoadingMore';
 import {SearchProps} from '../../utils/Types';
+import {
+  GetOfflineSearch,
+  GetSearch,
+} from '../../redux/actions/Series/series.actions';
 
 const Search: FunctionComponent<SearchProps> = (props) => {
-  const {navigation} = props;
+  const {navigation, loading, GetSearch, GetOfflineSearch} = props;
   const [searchText, setSearchText] = useState('');
   const [series, setSeries] = useState<any>([]);
   const [type, setType] = useState('anime');
-  const [loading, setLoading] = useState(false);
   const [nextLink, setNextLink] = useState('');
-  const [firstSearch, setFirstSearch] = useState(false);
 
-  const loadMore = async () => {
-    console.log('loading', loading);
-    if (loading) {
-      return;
-    }
-    console.log('nextLink', nextLink);
-    if (nextLink === '' || nextLink === undefined) {
-      return;
-    }
-    setLoading(true);
-    await axios
-      .get(nextLink)
-      .then(({data}) => {
-        setNextLink(data?.links?.next);
-        setSeries([...series, ...data?.data]);
-      })
-      .catch((err: any) => console.log('Error in loadMore ', console.log(err)));
-    setLoading(false);
-  };
-
-  const handleSearch = async (text: string) => {
-    if (text !== '') {
-      setLoading(true);
-      await axios
-        .get(apiSearchText(type, text))
-        .then(({data}) => {
-          setNextLink(data?.links?.next);
-          setSeries([...series, ...data?.data]);
+  const handleSearch = async (text: string, more: boolean) => {
+    if (more) {
+      if (loading || nextLink === '' || nextLink === undefined) {
+        return;
+      }
+      GetSearch(nextLink)
+        .then((res: any) => {
+          setNextLink(res.nextLink);
+          setSeries([...series, ...res.series]);
         })
-        .catch(console.log);
-      setLoading(false);
+        .catch();
+    } else {
+      if (text !== '') {
+        GetSearch(api.searchText(type, text))
+          .then((res: any) => {
+            setNextLink(res.nextLink);
+            setSeries([...series, ...res.series]);
+          })
+          .catch((err: any) => {
+            if (err === 'Network Error') {
+              GetOfflineSearch(type, text.toLowerCase())
+                .then((res: any) => setSeries(res))
+                .catch(console.log);
+            }
+          });
+      } else {
+        setSeries([]);
+        setNextLink('');
+      }
     }
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (searchText !== '') {
-        handleSearch(searchText);
+        handleSearch(searchText, false);
       } else {
         setSeries([]);
         setNextLink('');
-        setFirstSearch(false);
       }
     }, 500);
     return () => clearTimeout(timeoutId);
@@ -91,10 +89,12 @@ const Search: FunctionComponent<SearchProps> = (props) => {
                 onPressItem={(serie: any) => onPressItem(serie)}
               />
             )}
-            keyExtractor={(item: any) => item?.id}
+            keyExtractor={(item: any, index: number) =>
+              'search' + item?.id + index
+            }
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            onEndReached={() => loadMore()}
+            onEndReached={() => handleSearch('', true)}
             onEndReachedThreshold={0.1}
             ListFooterComponent={() => <LoadingMore loading={loading} />}
           />
@@ -112,8 +112,18 @@ const styles = StyleSheet.create({
   },
 });
 
-Search.defaultProps = {};
+const mapPropsToState = (state: any) => {
+  return {
+    loading: state.Series.loading,
+  };
+};
 
-Search.propTypes = {};
+const mapPropsToDispatch = (dispatch: any) => {
+  return {
+    GetSearch: (url: string) => dispatch(GetSearch(url)),
+    GetOfflineSearch: (category: string, text: string) =>
+      dispatch(GetOfflineSearch(category, text)),
+  };
+};
 
-export default Search;
+export default connect(mapPropsToState, mapPropsToDispatch)(Search);

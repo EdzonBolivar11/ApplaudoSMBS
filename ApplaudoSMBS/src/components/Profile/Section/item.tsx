@@ -1,4 +1,5 @@
 import React, {FunctionComponent} from 'react';
+import PropTypes from 'prop-types';
 import {View, StyleSheet, Image, Text} from 'react-native';
 
 import {FieldProps} from './../../../utils/Types';
@@ -7,8 +8,8 @@ const index: FunctionComponent<FieldProps> = (props) => {
   const {field} = props;
   return (
     <View style={styles.itemWrapper}>
-      <Image style={styles.icon} source={field.icon} />
-      <Text style={styles.field}>{field.value}</Text>
+      <Image style={styles.icon} source={field?.icon} />
+      <Text>{field?.value}</Text>
     </View>
   );
 };
@@ -25,11 +26,18 @@ const styles = StyleSheet.create({
     height: 18,
     marginRight: 5,
   },
-  field: {},
 });
 
-index.defaultProps = {};
+index.defaultProps = {
+  field: {
+    id: '',
+    icon: {},
+    value: '',
+  },
+};
 
-index.propTypes = {};
+index.propTypes = {
+  field: PropTypes.object.isRequired,
+};
 
 export default index;

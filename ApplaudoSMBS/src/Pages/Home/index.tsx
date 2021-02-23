@@ -1,73 +1,52 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
+import {connect} from 'react-redux';
 import Screen from './../../components/Screen';
 import CategoryList from '../../components/Home/CategoryList';
-import axios from 'axios';
-
 import Skeleton from '../../components/Home/CategoryList/Skeleton';
 import Tabs from '../../components/Home/CategoryList/Tabs';
-import {apiCategory} from '../../utils/Constants';
+import api from '../../utils/Constants';
 import LoadingMore from '../../components/LoadingMore';
 import {HomeProps} from '../../utils/Types';
+import {GetCategories} from '../../redux/actions/Series/series.actions';
 
 const Home: FunctionComponent<HomeProps> = (props) => {
-  const {navigation} = props;
-
+  const {
+    navigation,
+    GetCategories,
+    ClearCategories,
+    animeCategory,
+    mangaCategory,
+    loading,
+  } = props;
   const flatListRef = useRef<any>({});
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [categories, setCategories] = useState<any>([]);
+  const [nextLink, setNextLink] = useState('');
   const [type, setType] = useState('anime');
 
-  const loadMore = async () => {
-    if (loading) {
-      return;
-    }
-    if (offset > total) {
-      return;
-    } else {
-      setLoading(true);
-      await axios
-        .get(apiCategory + offset)
-        .then(({data}) => {
-          const tot = Math.floor(data?.meta?.count / 10) * 10;
-          setTotal(tot);
-          setOffset(offset + 10);
-          setCategories([...categories, ...data?.data]);
-        })
-        .catch(console.log);
-      setLoading(false);
-    }
+  const getCategories = (url: string, clear: boolean) => {
+    GetCategories(url, type, clear)
+      .then((res: string) => setNextLink(res))
+      .catch((err: any) => console.log(err.message));
   };
 
-  const reloadTypes = async () => {
-    setRefreshing(true);
-    await axios
-      .get(apiCategory + 0)
-      .then(({data}) => {
-        const tot = Math.floor(data?.meta?.count / 10) * 10;
-        setTotal(tot);
-        setOffset(10);
-        setCategories(data?.data);
-      })
-      .catch(console.log);
-    setRefreshing(false);
+  const loadMore = async () => {
+    if (nextLink === '' || !nextLink || loading) {
+      return;
+    }
+    await getCategories(nextLink, false);
   };
 
   const toTop = () =>
     flatListRef.current.scrollToOffset({animated: true, offset: 0});
 
   useEffect(() => {
-    loadMore();
+    getCategories(api.categories, true);
   }, []);
 
   useEffect(() => {
     toTop();
-    reloadTypes();
+    getCategories(api.categories, true);
   }, [type]);
 
   return (
@@ -77,25 +56,29 @@ const Home: FunctionComponent<HomeProps> = (props) => {
         setActiveType={async (activeType) => await setType(activeType)}
       />
       <View style={styles.home}>
-        {categories?.data?.length > 0 ? (
-          <Skeleton type="category" />
-        ) : (
-          <FlatList
-            ref={flatListRef}
-            data={categories}
-            renderItem={({item}) => (
-              <CategoryList list={item} type={type} navigation={navigation} />
-            )}
-            keyExtractor={(item: any) => item?.id}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            onEndReached={() => loadMore()}
-            onEndReachedThreshold={0.1}
-            ListFooterComponent={() => <LoadingMore loading={loading} />}
-            onRefresh={() => reloadTypes()}
-            refreshing={refreshing}
-          />
-        )}
+        {
+          /* categories?.data?.length > 0  */ false ? (
+            <Skeleton type="category" />
+          ) : (
+            <FlatList
+              ref={flatListRef}
+              data={type === 'anime' ? animeCategory : mangaCategory}
+              renderItem={({item}) => (
+                <CategoryList list={item} type={type} navigation={navigation} />
+              )}
+              keyExtractor={(item: any, index: number) =>
+                'c' + item?.id + index
+              }
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              onEndReached={() => loadMore()}
+              onEndReachedThreshold={0.1}
+              ListFooterComponent={() => <LoadingMore loading={loading} />}
+              onRefresh={() => getCategories(api.categories, true)}
+              refreshing={loading}
+            />
+          )
+        }
       </View>
     </Screen>
   );
@@ -108,8 +91,20 @@ const styles = StyleSheet.create({
   },
 });
 
-Home.defaultProps = {};
+const mapPropsToState = (state: any) => {
+  return {
+    loading: state.Series.loading,
+    animeCategory: state.Series.animeCategory,
+    mangaCategory: state.Series.mangaCategory,
+  };
+};
 
-Home.propTypes = {};
+const mapPropsToDispatch = (dispatch: any) => {
+  return {
+    ClearCategories: () => dispatch({type: 'RESTART_SERIES'}),
+    GetCategories: (url: string, category: string, clear: boolean) =>
+      dispatch(GetCategories(url, category, clear)),
+  };
+};
 
-export default Home;
+export default connect(mapPropsToState, mapPropsToDispatch)(Home);

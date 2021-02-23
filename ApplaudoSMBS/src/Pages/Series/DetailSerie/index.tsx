@@ -13,7 +13,6 @@ import Screen from '../../../components/Screen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../../../utils/Theme/Colors';
 import Share from 'react-native-share';
-/* import LocalStorage from './../../../utils/Storage'; */
 
 //Images
 const NoImage = require('./../../../assets/img/no-img.jpg');
@@ -44,6 +43,10 @@ const DetailsSerie = (props) => {
       ? item?.attributes?.titles['en_jp']
       : item?.attributes?.titles['en_kr']
       ? item?.attributes?.titles['en_kr']
+      : item?.attributes?.titles['en_us']
+      ? item?.attributes?.titles['en_us']
+      : item?.attributes?.titles['en_cn']
+      ? item?.attributes?.titles['en_cn']
       : 'Sin título';
 
   const goBack = () => navigation.goBack();
@@ -82,7 +85,7 @@ const DetailsSerie = (props) => {
     };
 
     try {
-      await Share.open(options).then(console.log).catch(console.log);
+      await Share.open(options);
     } catch (error) {
       console.log(error);
     }

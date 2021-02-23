@@ -23,10 +23,21 @@ const Screen: FunctionComponent<ScreenProps> = (props) => {
       <StatusBar translucent barStyle="light-content" />
     );
 
+  const renderChildren = () =>
+    !useScrollview ? (
+      children
+    ) : (
+      <ScrollView
+        bounces={false}
+        contentContainerStyle={styles.grow}
+        showsVerticalScrollIndicator={false}>
+        {children}
+      </ScrollView>
+    );
+
   return (
     <>
       {renderStatusBar()}
-
       <SafeAreaView
         style={[
           styles.safeArea,
@@ -43,20 +54,7 @@ const Screen: FunctionComponent<ScreenProps> = (props) => {
         duration={350}
         easing="ease-out"
         useNativeDriver>
-        {true ? (
-          !useScrollview ? (
-            children
-          ) : (
-            <ScrollView
-              bounces={false}
-              contentContainerStyle={styles.grow}
-              showsVerticalScrollIndicator={false}>
-              {children}
-            </ScrollView>
-          )
-        ) : (
-          children
-        )}
+        {renderChildren()}
       </Animatable.View>
     </>
   );

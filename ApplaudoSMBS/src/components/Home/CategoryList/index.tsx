@@ -1,63 +1,79 @@
+/* eslint-disable radix */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {connect} from 'react-redux';
+import {
+  GetOfflineSeries,
+  GetSeries,
+} from '../../../redux/actions/Series/series.actions';
+
 import Serie from './Serie';
 import {CategoryListProps} from '../../../utils/Types';
 import Colors from '../../../utils/Theme/Colors';
 import Skeleton from './Skeleton';
-import axios from 'axios';
 import LoadingMore from '../../LoadingMore';
+import {CLEAR_SERIES} from '../../../redux/reducers/Series/types';
 
 const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
-  const {list, type, navigation} = props;
+  const {
+    list,
+    type,
+    navigation,
+    GetSeries,
+    GetOfflineSeries,
+    ClearSeries,
+    loading,
+  } = props;
 
   const seriesRef = useRef<any>();
   const [nextLink, setNextLink] = useState('');
   const [series, setSeries] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
-  const [hasSeries, setHasSeries] = useState(true);
 
-  const loadMore = async () => {
-    if (nextLink === '' || nextLink === undefined) {
-      return;
-    }
-    setLoading(true);
-    await axios
-      .get(nextLink)
-      .then(({data}) => {
-        setNextLink(data?.links?.next);
-        setSeries([...series, ...data?.data]);
+  const getSeries = (url: string, clear: boolean) => {
+    GetSeries(url, type, list?.id, clear)
+      .then((res: any) => {
+        if (clear) {
+          setSeries(res.series);
+        } else {
+          setSeries([...series, ...res.series]);
+        }
+        setNextLink(res.nextLink);
       })
-      .catch(console.log);
-    setLoading(false);
+      .catch((err: any) => {
+        if (err === 'Network Error') {
+          GetOfflineSeries(type, list?.id)
+            .then((res: any) => setSeries(res))
+            .catch(console.log);
+        }
+      });
   };
 
-  const loadSeries = async () =>
-    await axios
-      .get(list?.relationships[type]?.links?.related)
-      .then(({data}) => {
-        setHasSeries(data?.data.length > 0);
-        setSeries([...data?.data]);
-        setNextLink(data?.links?.next);
-      })
-      .catch(console.log);
+  const loadMore = async () => {
+    if (nextLink === '' || !nextLink || loading) {
+      return;
+    }
+
+    await getSeries(nextLink, false);
+  };
 
   const toTop = () =>
     seriesRef?.current?.scrollToOffset({animated: true, offset: 0});
 
   useEffect(() => {
-    loadSeries();
+    /*  ClearSeries(); */
+    getSeries(list?.relationships[type]?.links?.related, true);
   }, []);
 
   useEffect(() => {
     toTop();
-    loadSeries();
+    getSeries(list?.relationships[type]?.links?.related, true);
   }, [type]);
 
-  return hasSeries ? (
+  return series.length > 0 ? (
     <View style={styles.list}>
       <Text style={styles.title}>{list?.attributes?.title}</Text>
-      {series.length === 0 ? (
+      {false ? (
         <Skeleton type="series" />
       ) : (
         <FlatList
@@ -68,7 +84,7 @@ const CategoryList: FunctionComponent<CategoryListProps> = (props) => {
           )}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item: any) => item?.id}
+          keyExtractor={(item: any, index: number) => 's' + item?.id + index}
           horizontal={true}
           onEndReached={() => loadMore()}
           onEndReachedThreshold={0.1}
@@ -94,8 +110,20 @@ const styles = StyleSheet.create({
   },
 });
 
-CategoryList.defaultProps = {};
+const mapPropsToState = (state: any) => {
+  return {
+    loading: state.Series.loading,
+  };
+};
 
-CategoryList.propTypes = {};
+const mapPropsToDispatch = (dispatch: any) => {
+  return {
+    ClearSeries: () => dispatch({type: CLEAR_SERIES}),
+    GetSeries: (url: string, category: string, categoryId: number) =>
+      dispatch(GetSeries(url, category, categoryId)),
+    GetOfflineSeries: (category: string, categoryId: number) =>
+      dispatch(GetOfflineSeries(category, categoryId)),
+  };
+};
 
-export default CategoryList;
+export default connect(mapPropsToState, mapPropsToDispatch)(CategoryList);

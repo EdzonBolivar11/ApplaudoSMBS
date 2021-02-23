@@ -1,4 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
+
 import {View, StyleSheet, Text, TouchableOpacity, Platform} from 'react-native';
 import Colors from '../../../../utils/Theme/Colors';
 import {TabsProps} from '../../../../utils/Types';
@@ -76,7 +77,5 @@ Tabs.defaultProps = {
   types: [],
   setActiveType: () => {},
 };
-
-Tabs.propTypes = {};
 
 export default Tabs;
