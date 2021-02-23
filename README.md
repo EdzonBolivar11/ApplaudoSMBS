@@ -4,7 +4,7 @@ Esta es una prueba técnica para entrar a la empresa Applaudo, consta de consumi
 ## Comenzando 🚀
 Para correr el proyecto solamente se necesita clonar el repositorio y después hacer: 
 ```
-yarn install
+cd ApplaudoSMBS && yarn install
 ```
 Para que corra en iOS puedes hacer :
 ```
