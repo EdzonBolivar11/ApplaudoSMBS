@@ -20,7 +20,7 @@ const Skeleton: FunctionComponent<SkeletonProps> = (props) => {
                   <View style={styles.skeletonImageWrapper}>
                     {items.map((itemSerie) => (
                       <View
-                        key={itemSerie + 'csSkeleton'}
+                        key={itemSerie + 'csSkeletonInside'}
                         style={styles.skeletonImage}
                       />
                     ))}

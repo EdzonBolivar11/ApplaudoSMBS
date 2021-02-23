@@ -32,18 +32,16 @@ const styles = StyleSheet.create({
   },
 });
 
-Section.defaultProps = {};
+Section.defaultProps = {
+  section: {
+    id: '',
+    title: '',
+    fields: [],
+  },
+};
 
 Section.propTypes = {
-  section: PropTypes.shape({
-    title: PropTypes.string,
-    fields: PropTypes.arrayOf(
-      PropTypes.shape({
-        icon: PropTypes.node,
-        value: PropTypes.string,
-      }),
-    ),
-  }),
+  section: PropTypes.object.isRequired,
 };
 
 export default Section;
